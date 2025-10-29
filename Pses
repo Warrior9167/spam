@@ -1,0 +1,30 @@
+import React, { useState } from "react";
+
+function AsyncDemo() {
+  const [message, setMessage] = useState("Click to start...");
+
+  function loadData() {
+    setMessage("Loading...");
+
+    // Simulated asynchronous operation (like fetching data)
+    new Promise((resolve, reject) => {
+      setTimeout(() => {
+        const success = Math.random() > 0.5; // 50% chance of success
+        if (success) resolve("✅ Data fetched successfully!");
+        else reject("❌ Failed to fetch data!");
+      }, 2000);
+    })
+      .then((result) => setMessage(result))
+      .catch((error) => setMessage(error));
+  }
+
+  return (
+    <div>
+      <h2>Async Programming with Promises</h2>
+      <p>{message}</p>
+      <button onClick={loadData}>Fetch Data</button>
+    </div>
+  );
+}
+
+export default AsyncDemo;
