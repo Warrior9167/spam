@@ -1,0 +1,16 @@
+LAMBDA FUNCTION CODE:
+import boto3
+
+def lambda_handler(event, context):
+    table = boto3.resource('dynamodb').Table('YourTableName')
+    table.put_item(Item=event)
+    return "Data added!"
+
+
+TEST JSON:
+{
+  "id": "1", (MAKE SURE ID IS ADDED AS PRIMARY KEY IN THE DYNAMO DB TABLE)
+  "name": "Rohan",
+  "branch": "IT",
+  "semester": 5
+}
