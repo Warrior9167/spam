@@ -1,0 +1,105 @@
+Perfect ✅ — this is another classic AWS practical that tests your understanding of **S3 as a static website host**.
+Let’s keep it **short, simple, step-wise**, and **exam-ready**, with small explanations alongside.
+
+---
+
+## 🧩 **Aim:**
+
+To study AWS S3 service and create a bucket for hosting a static web application.
+
+---
+
+## ⚙️ **Execution Steps**
+
+### **Step 1 – Create an S3 Bucket**
+
+* Go to **S3 → Create bucket**
+* **Bucket name:** e.g. `my-static-web-bucket`
+*ENABLE ACL OR CHANGE BUCKET POLICY (VIA CODE) TO DO IT W/O ENABLING ACL
+* **Region:** choose nearest one (e.g. `ap-south-1`)
+* Uncheck **Block all public access** → Confirm the warning.
+  *(Website hosting requires public read access.)*
+* Click **Create bucket**
+
+🧠 *S3 bucket acts like a web server where HTML, CSS, and JS files are stored.*
+
+---
+
+### **Step 2 – Upload Website Files**
+
+* Open your new bucket → **Upload**
+* Upload a simple `index.html` file (and optionally `style.css`, `script.js`).
+
+**Example `index.html`:**
+
+```html
+<!DOCTYPE html>
+<html>
+  <head><title>My Static Website</title></head>
+  <body>
+    <h1>Hello from AWS S3!</h1>
+    <p>This is my static web app hosted on S3.</p>
+  </body>
+</html>
+```
+
+---
+
+### **Step 3 – Enable Static Website Hosting**
+
+* Inside the bucket → **Properties tab**
+* Scroll to **Static website hosting** → **Edit**
+* Select **Enable**
+* Hosting type: *Host a static website*
+* Index document: `index.html`
+* Save changes
+
+🧠 *This tells AWS to serve your files through a public website endpoint.*
+
+---
+
+### **Step 4 – Make Files Public**
+
+* Go to **Objects tab → Select all → Actions → Make public**
+  *(or edit bucket policy manually to allow public read access)*
+
+🧠 *Public access is needed so anyone can open your website without credentials.*
+
+---
+
+### **Step 5 – Access the Website**
+
+* Go to **Properties → Static website hosting section**
+* Copy the **Bucket website endpoint URL** (e.g.
+  `http://my-static-web-bucket.s3-website-ap-south-1.amazonaws.com`)
+* Open it in a browser → You’ll see your webpage 🎉
+
+---
+
+### **Step 6 – Result**
+
+> Successfully hosted a static web application using AWS S3.
+> The website can be accessed publicly using the S3 website endpoint URL.
+
+---
+
+### 🧠 **Theory Summary (for viva/lab record)**
+
+* **Amazon S3 (Simple Storage Service)** is object storage for data, files, and web assets.
+* It can serve static files directly using **Static Website Hosting** feature.
+* S3 acts like a simple web server for static content (no backend processing).
+
+---
+
+### ✅ **Key Notes**
+
+| Component              | Purpose                      |
+| ---------------------- | ---------------------------- |
+| S3 bucket              | Stores website files         |
+| Static website hosting | Serves files via HTTP        |
+| Public access          | Allows everyone to view site |
+| Index document         | The default homepage         |
+
+---
+
+Would you like me to give you a **ready-made HTML + CSS mini webpage** (simple but nice looking) that you can directly upload for your practical?
