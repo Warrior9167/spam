@@ -1,0 +1,86 @@
+## 🧩 **Aim:**
+
+To understand AWS Lambda functions and create one (using Python) that logs
+**“An image has been added”** when a file is uploaded to an S3 bucket.
+
+---
+
+## ⚙️ **Execution Steps**
+
+### **Step 1 – Create an S3 bucket**
+
+* Go to **S3 → Create bucket → Name it e.g. `my-image-bucket`** → keep defaults → Create.
+* This is where you’ll upload the image.
+  *(S3 will automatically send an event to Lambda when a file is added.)*
+
+---
+
+### **Step 2 – Create an IAM role**
+
+* Go to **IAM → Roles → Create role → AWS service → Lambda**.
+* Attach policies:
+
+  * `AWSLambdaBasicExecutionRole` (to write logs to CloudWatch)
+  * `AmazonS3ReadOnlyAccess` (so Lambda can read S3 event info)
+* Name it e.g. `lambda-s3-role`.
+
+---
+
+### **Step 3 – Create the Lambda function**
+
+* Go to **Lambda → Create function → Author from scratch**
+
+  * Name: `s3ImageLogger`
+  * Runtime: **Python 3.x**
+  * Execution role: **Use existing role → lambda-s3-role**
+
+Paste this **simple Python code:**
+
+```python
+import json
+
+def lambda_handler(event, context):
+    print("An image has been added")
+    print("Event details:", json.dumps(event))
+    return "Log successful"
+```
+
+🧠 *This code runs automatically when the S3 event occurs and logs a message to CloudWatch.*
+
+---
+
+### **Step 4 – Add S3 trigger**
+
+* In Lambda → **Configuration → Triggers → Add trigger**
+
+  * Select **S3**
+  * Choose your bucket (`my-image-bucket`)
+  * Event type: **PUT (All object create events)**
+  * Check “Add”
+
+Now, Lambda will trigger every time a new file is uploaded.
+
+---
+
+### **Step 5 – Test it**
+
+* Go to **S3 → Upload → Add any image file**
+* Upload it to your bucket
+* Go to **CloudWatch → Logs → s3ImageLogger log group**
+
+  * You’ll see:
+
+    ```
+    An image has been added
+    Event details: {...}
+    ```
+
+✅ **That’s your output!**
+
+---
+
+### **Step 6 – Result**
+
+> Successfully created an AWS Lambda function that logs
+> “An image has been added” whenever a file is uploaded to the S3 bucket.
+
