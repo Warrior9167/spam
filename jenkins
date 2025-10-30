@@ -1,0 +1,81 @@
+PIPELINE:
+-> declarative pipeline script
+pipeline {
+    agent any
+    stages {
+        stage('Build') {
+            steps {
+                echo 'Building...'
+            }
+        }
+        stage('Test') {
+            steps {
+                echo 'Testing...'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                echo 'Deploying...'
+            }
+        }
+    }
+}
+
+-> scripted pipeline script
+node {
+    stage('Build') {
+        echo 'Building...'
+    }
+    stage('Test') {
+        echo 'Testing...'
+    }
+    stage('Deploy') {
+        echo 'Deploying...'
+    }
+}
+
+-> java programs
+FACTORIAL 
+public class Factorial {
+    public static void main(String[] args) {
+        int num = 5;
+        int fact = 1;
+        for (int i = 1; i <= num; i++) {
+            fact *= i;
+        }
+        System.out.println("Factorial of " + num + " is: " + fact);
+    }
+}
+
+PRIME NUMBER
+public class PrimeCheck {
+    public static void main(String[] args) {
+        int num = 11;
+        boolean isPrime = true;
+
+        if (num <= 1) isPrime = false;
+        else {
+            for (int i = 2; i <= num / 2; i++) {
+                if (num % i == 0) {
+                    isPrime = false;
+                    break;
+                }
+            }
+        }
+
+        if (isPrime)
+            System.out.println(num + " is a Prime number.");
+        else
+            System.out.println(num + " is not a Prime number.");
+    }
+}
+
+ADD 2 NUMBERS
+public class myprog {
+    public static void main(String[] args) {
+        int num1 = 5;
+        int num2 = 7;
+        int sum = num1 + num2;
+        System.out.println("Sum: " + sum);
+    }
+}
