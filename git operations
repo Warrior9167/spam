@@ -1,0 +1,249 @@
+## 🧩 **Step 1: Setup Your Folder**
+
+📁 Create a folder anywhere — e.g.
+
+```
+C:\GitPractice
+```
+
+Inside it, create a simple file like:
+
+```
+hello.txt
+```
+
+with text:
+
+```
+Hello Git!
+```
+
+---
+
+## 🧩 **Step 2: Open Git Bash Here**
+
+Right-click inside the folder → “Git Bash Here”
+You’ll see a prompt like:
+
+```
+user@PC MINGW64 /c/GitPractice (master)
+$
+```
+
+---
+
+## 🧩 **Step 3: Initialize Repository**
+
+```bash
+git init
+```
+
+👉 Starts Git in this folder.
+🖥 Output:
+
+```
+Initialized empty Git repository in C:/GitPractice/.git/
+```
+
+Means Git is now tracking this folder.
+
+---
+
+## 🧩 **Step 4: Configure User (first time only)**
+
+```bash
+git config --global user.name "Your Name"
+git config --global user.email "you@example.com"
+```
+
+👉 Tells Git who you are (shows in commit history).
+
+---
+
+## 🧩 **Step 5: Check Status**
+
+```bash
+git status
+```
+
+🖥 Output:
+
+```
+Untracked files:
+  hello.txt
+```
+
+👉 Means file exists but not yet tracked.
+
+---
+
+## 🧩 **Step 6: Add File to Staging**
+
+```bash
+git add .
+```
+
+🖥 Output: *(no output = success)*
+👉 “.” adds all files to staging area (ready for commit).
+
+Check again:
+
+```bash
+git status
+```
+
+Now you’ll see:
+
+```
+Changes to be committed:
+  new file: hello.txt
+```
+
+---
+
+## 🧩 **Step 7: Commit Changes**
+
+```bash
+git commit -m "First commit"
+```
+
+🖥 Output:
+
+```
+[main (root-commit) abc1234] First commit
+ 1 file changed, 1 insertion(+)
+```
+
+👉 Snapshot of your code saved locally.
+
+---
+
+## 🧩 **Step 8: View Commit History**
+
+```bash
+git log --oneline
+```
+
+🖥 Example:
+
+```
+abc1234 First commit
+```
+
+👉 Shows commit ID and message.
+
+---
+
+## 🧩 **Step 9: Create a New Branch**
+
+```bash
+git branch testbranch
+git checkout testbranch
+```
+
+🖥 Output:
+
+```
+Switched to branch 'testbranch'
+```
+
+👉 You’re now in a separate copy of your project.
+
+---
+
+## 🧩 **Step 10: Edit File and Commit Again**
+
+Edit `hello.txt` → add one more line like `Welcome to Git.`
+Then:
+
+```bash
+git add .
+git commit -m "Updated hello.txt"
+```
+
+🖥 Output:
+
+```
+[testbranch abc5678] Updated hello.txt
+```
+
+---
+
+## 🧩 **Step 11: Merge Branch Back**
+
+Switch to main:
+
+```bash
+git checkout main
+git merge testbranch
+```
+
+🖥 Output:
+
+```
+Updating abc1234..abc5678
+Fast-forward
+ hello.txt | 1 +
+```
+
+👉 Your testbranch changes merged into main.
+
+---
+
+###CLONE PUBLIC REPOSITORY VIA A URL:
+git clone url
+
+## 🧩 **Step 12: Connect to GitHub (Optional)**
+
+1️⃣ Create a new empty repo on GitHub
+2️⃣ Copy its HTTPS URL
+3️⃣ In Git Bash:
+
+```bash
+git remote add origin https://github.com/yourname/gitpractice.git
+```
+
+---
+
+## 🧩 **Step 13: Push Code to GitHub**
+
+```bash
+git push -u origin main
+```
+
+🖥 Output:
+
+```
+Enumerating objects... done.
+To https://github.com/yourname/gitpractice.git
+```
+
+👉 Code uploaded to GitHub!
+
+---
+
+## 🧩 **Step 14: Pull Code (if updated online)**
+
+```bash
+git pull origin main
+```
+
+👉 Downloads latest changes from GitHub.
+
+---
+
+## 🧩 **Step 15: View Differences**
+
+```bash
+git diff
+```
+
+👉 Shows line-by-line changes not yet committed.
+
+---
+
+✅ **You’re done!**
+That’s the **complete Git practical workflow** —
+and you can directly copy these commands in Git Bash to show in exam.
+
+Would you like me to give a **2-minute summary sheet (Git cheat sheet)** next — all commands + meaning in one compact table (for viva)?
