@@ -1,0 +1,261 @@
+## 🧪 **Aim:**
+
+To build an image for a sample web application using a Dockerfile.
+
+---
+
+## 🧠 **Theory (Short & Simple):**
+
+* A **Dockerfile** is a text file with **instructions** to build a **custom Docker image**.
+* It tells Docker **which base image to use**, **what files to add**, and **what commands to run**.
+* This lets developers **package their app + environment** into one portable image.
+
+---
+
+## ⚙️ **Steps:**
+
+### **1️⃣ Create a project folder**
+
+Example:
+
+```
+C:\docker_webapp
+```
+
+---
+
+### **2️⃣ Create a simple web page**
+
+Inside that folder, create a file:
+📄 `index.html`
+
+```html
+<html>
+  <body>
+    <h1>Hello from My Docker Web App!</h1>
+    <p>This page is served from a Docker container.</p>
+  </body>
+</html>
+```
+
+---
+
+### **3️⃣ Create a Dockerfile**
+
+In the same folder, create:
+📄 `Dockerfile`
+
+```Dockerfile
+FROM nginx
+COPY . /usr/share/nginx/html
+```
+
+🧠 **Explanation:**
+
+* `FROM nginx` → use the official **nginx web server** as the base image
+* `COPY . /usr/share/nginx/html` → copy all files from your current folder (your web app) into the Nginx folder that serves web pages
+
+---
+
+### **4️⃣ Build your custom image**
+
+Open PowerShell / CMD in that folder and run:
+
+```bash
+docker build -t mywebapp .  (MAKE SURE TO RUN THIS COMMAND IN THE FOLDER CONTAINING THE DOCKER FILE AND WEBSITE FILES)
+```
+
+🧠 **Explanation:**
+
+* `-t mywebapp` → name your image “mywebapp”
+* `.` → means use the current directory (where Dockerfile is)
+
+✅ Output will show steps like:
+
+```
+Step 1/2 : FROM nginx
+Step 2/2 : COPY . /usr/share/nginx/html
+Successfully built <id>
+Successfully tagged mywebapp:latest
+```
+
+---
+
+### **5️⃣ Run your custom container**
+
+```bash
+docker run -d -p 8083:80 --name webapp mywebapp
+```
+
+🧠 **Explanation:**
+
+* `-p 8083:80` → map your system port 8083 to container’s port 80
+* `--name webapp` → name of the running container
+* `mywebapp` → the image you just built
+
+---
+
+### **6️⃣ View the application**
+
+Open browser →
+👉 **[http://localhost:8083](http://localhost:8083)**
+
+✅ You’ll see your **custom web page** inside a Docker container!
+
+---
+
+### **7️⃣ (Optional Cleanup)**
+
+```bash
+docker stop webapp
+docker rm webapp
+```
+
+---
+
+## 🧾 **Result:**
+
+A Docker image was successfully built using a Dockerfile and deployed as a container serving a sample web application.
+
+---
+
+## 💬 **Viva Tips:**
+
+| Question                                            | Short Answer                                          |
+| --------------------------------------------------- | ----------------------------------------------------- |
+| What is a Dockerfile?                               | A text file with steps to build a Docker image.       |
+| What does `FROM nginx` mean?                        | Use Nginx image as the base web server.               |
+| What does `COPY . /usr/share/nginx/html` do?        | Copies local files into the container’s web folder.   |
+| What is the difference between image and container? | Image = template, Container = running instance of it. |
+
+
+
+-----------------------------------------------------------------------END-----------------------------------------------------------------------------------------
+
+      
+## 🧪 **Aim:**
+
+To deploy a container in Docker using Docker Desktop (Windows).
+
+---
+
+## ⚙️ **Easiest, Minimal Steps:**
+
+### **1️⃣ Open Docker Desktop**
+
+🧠 **Explanation:**
+Docker Desktop is the main app that runs the **Docker Engine** in the background.
+You must open it first — wait until it shows **“Docker Engine is running.”**
+
+---
+
+### **2️⃣ Open Command Prompt / PowerShell**
+
+🧠 **Explanation:**
+You’ll use simple Docker commands here.
+(Yes, you still need to run commands — the GUI alone doesn’t show everything needed for the practical.)
+
+---
+
+### **3️⃣ Check if Docker works**
+
+```bash
+docker --version
+```
+
+🧠 **Explanation:**
+Confirms Docker is properly installed and running.
+✅ Example output:
+`Docker version 27.1.1, build abc1234`
+
+---
+
+### **4️⃣ Pull a Docker image**
+
+```bash
+docker pull nginx
+```
+
+🧠 **Explanation:**
+This downloads a **prebuilt web server image (nginx)** from **Docker Hub**.
+👉 Think of an *image* like a “template” for making containers.
+
+✅ Example output:
+`Using default tag: latest  
+latest: Pull complete`
+
+---
+
+### **5️⃣ Run the container**
+
+```bash
+docker run -d -p 8080:80 --name myweb nginx
+```
+
+🧠 **Explanation:**
+This starts a container in the background.
+
+* `-d` → detached mode (runs in background)
+* `-p 8080:80` → maps your system’s port 8080 to container’s port 80
+* `--name myweb` → gives your container a name
+* `nginx` → which image to use
+
+✅ Example output:
+`abc12345...` (container ID)
+
+---
+
+### **6️⃣ Check if it’s running**
+
+```bash
+docker ps
+```
+
+🧠 **Explanation:**
+Lists all running containers.
+
+✅ Example output:
+
+```
+CONTAINER ID   IMAGE   STATUS          PORTS
+abc12345       nginx   Up 10 seconds   0.0.0.0:8080->80/tcp
+```
+
+---
+
+### **7️⃣ Open Browser**
+
+Go to 👉 **[http://localhost:8080](http://localhost:8080)**
+
+🧠 **Explanation:**
+This opens your Nginx web server running inside Docker.
+✅ You’ll see “Welcome to Nginx” page — means **container deployed successfully!**
+
+---
+
+### **8️⃣ (Optional Cleanup)**
+
+```bash
+docker stop myweb
+docker rm myweb
+```
+
+🧠 **Explanation:**
+Stops and removes your container to free space.
+
+---
+
+## 🧾 **Result:**
+
+Successfully deployed and accessed an Nginx container on port 8080 using Docker Desktop.
+
+---
+
+## 💡 **Mini Summary (for viva):**
+
+| Term         | Meaning                    | Example           |
+| ------------ | -------------------------- | ----------------- |
+| Image        | Template for container     | nginx             |
+| Container    | Running instance of image  | myweb             |
+| Port Mapping | Connects host to container | 8080:80           |
+| Docker Hub   | Online repo for images     | docker pull nginx |
