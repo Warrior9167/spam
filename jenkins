@@ -34,6 +34,72 @@ node {
     }
 }
 
+------------------------------------SOME WEIRD CODES SENT BY MAM------------------------------------------
+Jenkinsfile (Declarative Pipeline)
+pipeline { 
+    agent any 
+    options {
+        skipStagesAfterUnstable()
+    }
+    stages {
+        stage('Build') { 
+            steps { 
+                sh 'make' 
+            }
+        }
+        stage('Test'){
+            steps {
+                sh 'make check'
+                junit 'reports/**/*.xml' 
+            }
+        }
+        stage('Deploy') {
+            steps {
+                sh 'make publish' //
+            }
+        }
+    }
+}
+
+
+pipeline {
+    agent any
+    stages {
+        stage('Build') {
+            steps {
+                sh 'mvn clean install'
+            }
+        }
+        stage('Test') {
+            steps {
+                junit 'target/surefire-reports/*.xml'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                sh 'make publish'
+            }
+        }
+    }
+}
+
+
+node {
+    stage('Build') {
+        // Build the application
+        sh 'mvn clean install'
+    }
+    stage('Test') {
+        // Run the tests
+        sh 'mvn test'
+    }
+    stage('Deploy') {
+        // Deploy the application
+        sh 'deploy.sh'
+    }
+}
+
+
 -> java programs
 FACTORIAL 
 public class Factorial {
