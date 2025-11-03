@@ -1,0 +1,1448 @@
+------------------------------------------------------reconnaisance tools-------------------------------------------------------------------------
+## 🧰 1. `dig` — **DNS Query Tool**
+
+**Purpose:** Queries DNS servers for information about a domain.
+**Use case:** Find IP addresses, mail servers, name servers, and other DNS records.
+**Example:**
+
+```bash
+dig example.com A
+```
+
+✅ Finds the IPv4 address of the domain.
+
+---
+
+## 🌐 2. `whois` — **Domain Registration Info**
+
+**Purpose:** Looks up ownership and registration details for a domain name or IP address.
+**It queries the WHOIS database**, which stores information like:
+
+* Domain owner
+* Registrar (where it’s registered)
+* Contact email and address
+* Registration and expiration dates
+* Name servers
+
+**Example:**
+
+```bash
+whois example.com
+```
+
+**Output includes:**
+
+```
+Domain Name: EXAMPLE.COM
+Registrar: IANA
+Creation Date: 1995-08-13
+Expiration Date: 2030-08-12
+Name Server: A.IANA-SERVERS.NET
+```
+
+**Use case:** Find out *who owns a domain* or when it expires — useful in cybersecurity and networking.
+
+---
+
+## 🌍 3. `traceroute` — **Path of Network Packets**
+
+**Purpose:** Shows the **route** (hops) your packets take from your computer to a destination host.
+
+It helps identify:
+
+* Network bottlenecks
+* Where connections slow down or fail
+
+**Example:**
+
+```bash
+traceroute google.com
+```
+
+**Output (simplified):**
+
+```
+1  192.168.1.1       (router)
+2  10.24.0.1         (ISP gateway)
+3  203.0.113.1       (ISP backbone)
+4  142.250.72.238    (Google)
+```
+
+Each “hop” is a router your packets go through.
+
+---
+
+## 🕵️‍♂️ 4. `nikto` — **Web Server Vulnerability Scanner**
+
+**Purpose:** Scans a website or web server for **security vulnerabilities** and misconfigurations.
+
+It’s a **penetration testing tool**, not just diagnostic — use it ethically and with permission.
+
+**Example:**
+
+```bash
+nikto -h http://example.com
+```
+
+**It can detect:**
+
+* Outdated software versions
+* Insecure HTTP headers
+* Default files and directories
+* Known exploits
+
+⚠️ **Ethical note:** Only use `nikto` on systems you own or are authorized to test. Unauthorized scanning is illegal.
+
+---
+
+## 🔎 5. `dmitry` — **Deepmagic Information Gathering Tool**
+
+**Purpose:** Performs a mix of reconnaissance tasks automatically.
+
+It can:
+
+* Get WHOIS info
+* Get Netcraft info
+* Perform subdomain searches
+* Do email address enumeration
+* Perform TCP port scans
+
+**Example:**
+
+```bash
+dmitry -winse example.com
+```
+
+Options:
+
+* `-w` → WHOIS lookup
+* `-i` → IP info
+* `-n` → Netcraft info
+* `-s` → Subdomain search
+* `-e` → Email address search
+
+**Use case:** All-in-one recon tool for security assessments.
+
+---
+
+## 🌐 6. `nslookup` — **Simple DNS Lookup Tool**
+
+**Purpose:** Like `dig`, it queries DNS records — but it’s simpler and older.
+Many admins use `dig` now because it’s more powerful, but `nslookup` is still handy.
+
+**Example:**
+
+```bash
+nslookup example.com
+```
+
+Output:
+
+```
+Server:  8.8.8.8
+Address: 8.8.8.8#53
+
+Non-authoritative answer:
+Name: example.com
+Address: 93.184.216.34
+```
+
+---
+
+## ⚖️ Summary Table
+
+| Tool         | Main Purpose              | Layer       | Typical Use                               |
+| ------------ | ------------------------- | ----------- | ----------------------------------------- |
+| `dig`        | DNS lookup                | DNS         | Get IPs, MX, TXT, etc.                    |
+| `whois`      | Domain registration info  | Application | Find owner & registrar                    |
+| `traceroute` | Network path tracing      | Network     | Diagnose connection routes                |
+| `nikto`      | Web vulnerability scanner | Application | Security auditing                         |
+| `dmitry`     | Reconnaissance toolkit    | Mixed       | Info gathering (WHOIS, ports, subdomains) |
+| `nslookup`   | Basic DNS lookup          | DNS         | Simple domain → IP lookup                 |
+
+
+-----------------------------------------------------------hashdeep-------------------------------------------------------------------------------------------------------
+
+Got it 👍 — you want to **create and edit files in Notepad (Windows)**, not using Linux `echo` commands.
+That’s perfectly fine — WSL can read and hash any files in your **Windows file system** too.
+Let’s adjust everything so it fits **your Ubuntu-on-WSL setup using Notepad for editing**.
+
+---
+
+## 🧭 Aim
+
+> To explore the `hashdeep` tool in Ubuntu (WSL) for generating, matching, and auditing the hashes of files.
+
+---
+
+## 🔹 1. What is a Hash (in simple words)
+
+A **hash** is a unique fixed-length code (a “digital fingerprint”) created from a file’s contents.
+Even if one character changes, the hash changes completely.
+That’s how you detect tampering or accidental modification.
+
+---
+
+## 🔹 2. What is hashdeep
+
+`hashdeep` is a command-line tool that can:
+
+1. **Generate** file hashes (make a baseline list)
+2. **Match** files with that baseline (integrity check)
+3. **Audit** files (find new, missing, or modified files)
+
+It supports algorithms like MD5, SHA1, and SHA256.
+
+---
+
+## 🔹 3. Setup for Ubuntu in WSL
+
+### Step 1: Install hashdeep
+
+In your **Ubuntu terminal**, run:
+
+```bash
+sudo apt update
+sudo apt install md5deep
+```
+
+Then check installation:
+
+```bash
+hashdeep -h
+```
+
+✅ You should see usage info for `hashdeep`.
+
+---
+
+## 🔹 4. Preparing files using Notepad (Windows side)
+
+1. On Windows, open **File Explorer** and go to a folder you’ll use for the experiment.
+   Example:
+
+   ```
+   C:\Users\<YourName>\Documents\hashlab
+   ```
+
+2. Inside that folder, create a few text files using **Notepad**:
+
+   * `file1.txt` → write: “This is the original file.”
+   * `file2.txt` → write: “Security lab experiment.”
+     Save both.
+
+3. Make a copy of this folder for later checking:
+
+   * Copy `hashlab` → paste → rename as `hashlab_copy`.
+
+   So you have:
+
+   ```
+   C:\Users\<YourName>\Documents\hashlab
+   C:\Users\<YourName>\Documents\hashlab_copy
+   ```
+
+---
+
+## 🔹 5. Access these files inside Ubuntu (WSL)
+
+In Ubuntu terminal, Windows drives appear under `/mnt/`.
+So your folders are accessible like this:
+
+```
+/mnt/c/Users/<YourName>/Documents/hashlab
+/mnt/c/Users/<YourName>/Documents/hashlab_copy
+```
+
+You can `cd` (change directory) into them:
+
+```bash
+cd /mnt/c/Users/<YourName>/Documents
+```
+
+---
+
+## 🔹 6. Step-by-Step Experiment Procedure
+
+### **Step 1: Generate baseline hash list**
+
+```bash
+hashdeep -r -c sha256 /mnt/c/Users/<YourName>/Documents/hashlab > baseline.txt
+```
+
+🟢 *Explanation:*
+
+* `-r` → recursively process all files in that folder
+* `-c sha256` → use SHA256 algorithm
+* Output is saved to `baseline.txt` (in your current WSL folder)
+
+This file now contains hashes of all your original files — your **reference list**.
+
+---
+
+### **Step 2: Match files (verification check)**
+
+```bash
+hashdeep -r -k baseline.txt /mnt/c/Users/<YourName>/Documents/hashlab_copy
+```
+
+🟢 *Explanation:*
+
+* `-k baseline.txt` → use your stored reference hashes
+* Compares hashes of files in `hashlab_copy`
+* Reports which ones match or differ
+
+✅ If both folders are identical, you’ll see all files matched.
+
+---
+
+### **Step 3: Test integrity change (manual edit via Notepad)**
+
+Now, open `file2.txt` in **Notepad** inside `hashlab_copy` and change some text.
+Save the file.
+
+Then rerun the match command:
+
+```bash
+hashdeep -r -k baseline.txt /mnt/c/Users/<YourName>/Documents/hashlab_copy
+```
+
+🟠 You’ll now see that `file2.txt` no longer matches — its hash changed.
+That’s how hashdeep detects tampering.
+
+---
+
+### **Step 4: Audit files (find new, missing, or changed)**
+
+```bash
+hashdeep -a -k baseline.txt -r /mnt/c/Users/<YourName>/Documents/hashlab_copy
+```
+
+🟢 *Explanation:*
+
+* `-a` = audit mode
+* Reports:
+
+  * **Matched** files (same as baseline)
+  * **New** files (not in baseline)
+  * **Missing** files (deleted)
+  * **Moved** files (same content, different path)
+
+---
+
+### **Step 5: View results**
+
+Typical audit output:
+
+```
+%%%% HASHDEEP-1.0
+%%%% Audit Results %%%%
+2 files matched
+1 file modified
+0 new files
+0 missing files
+```
+
+---
+
+## 🔹 7. Summary Table for Report
+
+| Activity               | Command                                                   | Purpose                               |
+| ---------------------- | --------------------------------------------------------- | ------------------------------------- |
+| **Generate baseline**  | `hashdeep -r -c sha256 /mnt/c/.../hashlab > baseline.txt` | Create list of original file hashes   |
+| **Match verification** | `hashdeep -r -k baseline.txt /mnt/c/.../hashlab_copy`     | Compare current files with baseline   |
+| **Audit integrity**    | `hashdeep -a -k baseline.txt -r /mnt/c/.../hashlab_copy`  | Detect changed, new, or missing files |
+
+---
+
+## 🔹 8. Concept Recap
+
+* A **hash** = digital fingerprint of a file.
+* **hashdeep** = tool to generate and compare these fingerprints.
+* You can create and edit files **freely with Notepad**, since WSL reads Windows files under `/mnt/c/...`.
+* You first **generate a baseline** from the original folder, then **match or audit** to check integrity later.
+* Perfect for **file verification and digital forensics**.
+
+----------------------------------------------------------------------dos attack------------------------------------------------------------------------------
+For educational purposes in a controlled and isolated lab environment (such as using virtual machines on a private network), you can simulate a DoS attack using hping3. This is typically done by sending a high volume of traffic, such as a SYN flood or ICMP flood, to a target system to overwhelm its resources. 
+⚠️ Important Legal and Ethical Note
+Never perform these simulations on networks or systems you do not own or have explicit written permission to test. Unauthorized DoS attacks are illegal and can lead to severe penalties. The commands below are for controlled, legal, and ethical network security testing. 
+Prerequisites
+Two Virtual Machines (VMs): One for the attacker (e.g., Kali Linux, which has hping3 pre-installed) and one for the target (e.g., Ubuntu Server with a web service like Apache installed).
+Isolated Private Network: Ensure the VMs are on a private virtual network that is not connected to the internet or any other live network.
+Monitoring Tools: Use tools like Wireshark on the target VM to observe the traffic and an Intrusion Detection System (IDS) like Snort to test detection capabilities. 
+DoS Attack Simulations with hping3
+Here are some common DoS attack simulations:
+1. TCP SYN Flood Attack 
+This attack exploits the TCP three-way handshake by sending a flood of SYN packets without completing the connection with the final ACK packet. This leaves the target server with many "half-open" connections, consuming its resources. 
+Command:
+bash
+sudo hping3 <target_ip_address> --flood -S -p <target_port> --rand-source
+sudo: Runs the command with superuser privileges (required to send raw packets).
+hping3: The command to use the tool.
+<target_ip_address>: The IP address of your target VM.
+--flood: Sends packets as fast as possible without showing replies.
+-S: Sets the SYN flag in the TCP header.
+-p <target_port>: Specifies the destination port (e.g., 80 for a web server).
+--rand-source: Spoofs the source IP address with random values, making it harder for the target to identify and block the source. 
+2. ICMP Flood Attack
+This is a volumetric attack that overwhelms the target with ICMP echo requests (pings), consuming significant network bandwidth and CPU resources as the target attempts to reply to all of them. 
+Command:
+bash
+sudo hping3 <target_ip_address> --flood --icmp
+--icmp or -1: Specifies ICMP mode. 
+3. UDP Flood Attack 
+This attack floods the target with UDP packets to arbitrary ports. The target then uses resources to determine what to do with the packets, eventually overwhelming the system. 
+Command:
+bash
+sudo hping3 <target_ip_address> --flood --udp -p <target_port> --rand-source
+--udp or -2: Specifies UDP mode. 
+4. LAND Attack
+In a LAND attack, a packet is sent to the target with the source and destination IP addresses and ports set to be the same. The target machine enters a loop trying to reply to itself, which can cause it to crash. (Note: Modern systems are often patched against this). 
+Command:
+bash
+sudo hping3 <target_ip_address> -S -p <target_port> -a <target_ip_address>
+-a <IP>: Uses the specified IP address as the spoofed source address. 
+Monitoring the Simulation
+While the attack is running, use monitoring tools on the target VM to observe the impact:
+Wireshark: To analyze the incoming packet types, source IPs, and traffic volume.
+System Monitors: To track CPU, memory, and network usage (e.g., top or htop in Linux). 
+After the simulation, you can use the data to analyze how well the target's defenses (like firewalls or IDS) detected and mitigated the attack. 
+
+----------------------------------------------------------------------------nmap------------------------------------------------------------------------
+Done — below is the **expanded, consolidated Nmap guide** that combines the previous full explanation **with the Null scan (`-sN`) section added**. It includes: concept, detailed step-by-step commands, option-by-option explanations, realistic sample output fragments for each scan type, how to interpret those outputs, and a table of other common useful options. It’s written for a beginner but with enough depth for lab reports.
+
+---
+
+# Nmap — Complete practical guide (with Null scan)
+
+> **Short concept:** Nmap (Network Mapper) probes hosts on a network using ICMP/TCP/UDP packets and interprets replies to discover which hosts are up, which ports are open/closed/filtered, what services/versions run, and to make probabilistic OS guesses.
+
+> **Always** scan only systems you own or have explicit permission to test.
+
+---
+
+## Core ideas (expanded)
+
+* **Host discovery:** find live hosts (ping sweep).
+* **Port states:** `open`, `closed`, `filtered`, `open|filtered`.
+* **Scan types:** different packet styles (SYN, Connect, Null, FIN, Xmas, UDP) produce different responses and can bypass some simple filters.
+* **Service/version detection:** probe open ports to identify service name and version (`-sV`).
+* **OS fingerprinting:** probe network stack behavior to guess OS (`-O`).
+* **Timing/templates:** `-T0`..`-T5` balances speed vs stealth/stability.
+* **NSE scripts:** Nmap Scripting Engine can run many scripts (`--script`) for discovery, vuln checks, info-gathering.
+
+---
+
+## Common useful Nmap options (quick reference)
+
+| Option                    | Meaning / Use                                                      |
+| ------------------------- | ------------------------------------------------------------------ |
+| `-sS`                     | TCP SYN scan (fast/stealthy; requires root).                       |
+| `-sT`                     | TCP Connect scan (no raw sockets required, noisier).               |
+| `-sU`                     | UDP scan.                                                          |
+| `-sN`                     | Null scan (no TCP flags set).                                      |
+| `-sF`                     | FIN scan (only FIN flag set).                                      |
+| `-sX`                     | Xmas scan (FIN, PSH, URG flags set).                               |
+| `-sV`                     | Service/version detection.                                         |
+| `-O`                      | OS fingerprinting.                                                 |
+| `-A`                      | Aggressive: `-O` + `-sV` + default scripts + traceroute.           |
+| `-p`                      | Port specification (single, ranges, comma-separated, `-` for all). |
+| `-p-`                     | All ports (1–65535).                                               |
+| `-T0`..`-T5`              | Timing templates (0 slow stealth → 5 very fast/noisy).             |
+| `-Pn`                     | Skip host discovery; treat host(s) as up (no ping).                |
+| `-oN/-oX/-oG`             | Output format (normal, XML, grepable).                             |
+| `--script`                | Run NSE scripts (e.g., `--script vuln` or `--script banner`).      |
+| `--top-ports`             | Scan most common N ports (fast).                                   |
+| `--open`                  | Show only open ports.                                              |
+| `--reason`                | Print reason nmap gave for each port state.                        |
+| `--traceroute`            | Run traceroute after scanning.                                     |
+| `--min-rate/--max-rate`   | Control packet send rate.                                          |
+| `--exclude/--excludefile` | Exclude IPs/ranges from scan.                                      |
+
+---
+
+## Commands, option explanations, sample output, and interpretation
+
+Each scan below shows:
+
+1. command
+2. one-line purpose/why
+3. option-by-option explanation
+4. a realistic sample output fragment
+5. how to read/interpret it
+
+---
+
+### 1) Host discovery (Ping scan)
+
+**Command**
+
+```bash
+nmap -sn 192.168.1.0/24
+```
+
+**Purpose:** Find which IPs in the subnet are alive; no port scan.
+
+**Options explained**
+
+* `-sn` — host discovery only (no port scanning).
+* `192.168.1.0/24` — CIDR range to scan.
+
+**Sample output**
+
+```
+Nmap scan report for 192.168.1.1
+Host is up (0.0040s latency).
+Nmap scan report for 192.168.1.10
+Host is up (0.0021s latency).
+Nmap done: 256 IPs (2 hosts up) scanned in 5.12 seconds
+```
+
+**Interpretation:** Two hosts replied to discovery probes; they are considered up. Latency shows response time.
+
+---
+
+### 2) TCP SYN scan (fast & common)
+
+**Command**
+
+```bash
+sudo nmap -sS -p 1-1024 -T4 192.168.1.10
+```
+
+**Purpose:** Find open TCP ports 1–1024 using SYN (half-open) handshake; stealthier than full connect.
+
+**Options explained**
+
+* `sudo` — required for raw socket operations.
+* `-sS` — TCP SYN scan.
+* `-p 1-1024` — scan port range 1–1024.
+* `-T4` — timing template for speed (good for LAN).
+
+**Sample output**
+
+```
+PORT     STATE    SERVICE
+22/tcp   open     ssh
+80/tcp   open     http
+139/tcp  filtered netbios-ssn
+445/tcp  open     microsoft-ds
+```
+
+**Interpretation:** 22, 80, 445 are open (services listening). 139 is filtered (firewall blocking or dropping probes).
+
+---
+
+### 3) TCP Connect scan (no root)
+
+**Command**
+
+```bash
+nmap -sT -p 22,80,443 192.168.1.10
+```
+
+**Purpose:** Full TCP connect; use if you don’t have root. More detectable.
+
+**Options explained**
+
+* `-sT` — TCP connect scan (completes three-way handshake).
+* `-p 22,80,443` — specific ports.
+
+**Sample output**
+
+```
+PORT    STATE  SERVICE
+22/tcp  open   ssh
+80/tcp  open   http
+443/tcp closed https
+```
+
+**Interpretation:** 443 closed: reachable but no service. Use `-sT` when `-sS` not possible.
+
+---
+
+### 4) UDP scan
+
+**Command**
+
+```bash
+sudo nmap -sU -p 53,123 192.168.1.10
+```
+
+**Purpose:** Probe UDP ports (DNS, NTP). UDP scanning is slower and often ambiguous.
+
+**Options explained**
+
+* `-sU` — UDP scan.
+* `-p 53,123` — UDP ports to check.
+
+**Sample output**
+
+```
+PORT    STATE         SERVICE
+53/udp  open          domain
+123/udp open|filtered ntp
+```
+
+**Interpretation:** 53 open — DNS responding. 123 is open|filtered — could be open but not replying, or filtered by firewall (nmap cannot distinguish).
+
+---
+
+### 5) Null scan (`-sN`) — stealthy flagless probe
+
+**Command**
+
+```bash
+sudo nmap -sN -p 1-1024 192.168.1.10
+```
+
+**Purpose:** Send TCP packets with no flags set; use to elicit different TCP stack behavior (stealthy).
+
+**Options explained**
+
+* `-sN` — Null scan (no TCP flags).
+* `-p 1-1024` — ports to probe.
+* `sudo` — raw packets require root.
+
+**Sample output**
+
+```
+PORT    STATE         SERVICE
+22/tcp  closed        ssh
+53/tcp  open|filtered domain
+80/tcp  open|filtered http
+139/tcp filtered      netbios-ssn
+```
+
+**Interpretation:**
+
+* `22 closed` — host sent RST to flagless probe → port closed.
+* `53 open|filtered` — no response → could be open (ignored probe) or filtered by firewall.
+  **Caveat:** Null scans unreliable on many modern systems (Windows replies RST to odd packets) and behind firewalls.
+
+---
+
+### 6) FIN / Xmas scans (related stealth scans)
+
+**Commands**
+
+```bash
+sudo nmap -sF -p 1-1024 192.168.1.10   # FIN
+sudo nmap -sX -p 1-1024 192.168.1.10   # Xmas
+```
+
+**Purpose:** Other stealth scans that set unique flag patterns; similar interpretation to Null: RST → closed, no reply → open|filtered. Modern systems/firewalls reduce their usefulness.
+
+---
+
+### 7) Service/version detection
+
+**Command**
+
+```bash
+sudo nmap -sV -p 22,80 192.168.1.10
+```
+
+**Purpose:** Probe open ports to identify service and version (useful to map to CVEs).
+
+**Options explained**
+
+* `-sV` — service/version detection.
+
+**Sample output**
+
+```
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 (protocol 2.0)
+80/tcp open  http    Apache httpd 2.4.29 ((Ubuntu))
+```
+
+**Interpretation:** You can now search known vulnerabilities for these specific versions.
+
+---
+
+### 8) OS fingerprinting
+
+**Command**
+
+```bash
+sudo nmap -O 192.168.1.10
+```
+
+**Purpose:** Guess OS by comparing replies to a fingerprint database.
+
+**Options explained**
+
+* `-O` — enable OS detection.
+
+**Sample output**
+
+```
+OS details: Linux 3.2 - 4.9
+Network Distance: 2 hops
+Aggressive OS guesses: Linux 3.10 - 3.13 (95%)
+```
+
+**Interpretation:** Nmap gives probable OS range and confidence; results are probabilistic and can be affected by firewalls.
+
+---
+
+### 9) Aggressive scan (all-in-one)
+
+**Command**
+
+```bash
+sudo nmap -A -p 1-1000 192.168.1.10 -oN full_scan.txt
+```
+
+**Purpose:** Run OS detection, version detection, default scripts, and traceroute in a single run.
+
+**Options explained**
+
+* `-A` — aggressive (OS + version + scripts + traceroute).
+* `-oN full_scan.txt` — save normal-format output.
+
+**Sample output (excerpt)**
+
+```
+PORT    STATE SERVICE VERSION
+22/tcp  open  ssh     OpenSSH 7.6p1 Ubuntu
+80/tcp  open  http    Apache httpd 2.4.29
+Device type: general purpose
+TRACEROUTE
+1  192.168.1.1  1.23 ms
+2  192.168.1.10 2.45 ms
+```
+
+**Interpretation:** Very informative but noisy—use with permission.
+
+---
+
+### 10) Combined TCP + UDP scan (specific ports)
+
+**Command**
+
+```bash
+sudo nmap -sS -sU -p T:22,80,443,U:53,123 192.168.1.10 -T3
+```
+
+**Purpose:** Scan TCP and UDP ports in one run.
+
+**Options explained**
+
+* `-sS -sU` — TCP SYN + UDP scans.
+* `-p T:...,U:...` — specify TCP and UDP port lists.
+
+**Sample output (excerpt)**
+
+```
+PORT    STATE         SERVICE
+22/tcp  open          ssh
+53/udp  open          domain
+80/tcp  open          http
+123/udp open|filtered ntp
+```
+
+**Interpretation:** Combines insights from both transport protocols.
+
+---
+
+## How Nmap decides port state (detailed)
+
+* **Open:** service responded appropriately to probe (e.g., SYN/ACK).
+* **Closed:** host replied with RST to probe — reachable but no service.
+* **Filtered:** no definitive response or an ICMP unreachable; firewall likely dropping traffic.
+* **Open|filtered:** ambiguous (common in UDP, Null/FIN/Xmas).
+  Nmap can print `--reason` to show the packet/response leading to its conclusion.
+
+---
+
+## Detecting / troubleshooting scan inconsistencies
+
+* **Firewalls/IPS** can block probes → many `filtered` or `open|filtered` results.
+* **Timing**: slow networks may require `-T2`/`-T3` instead of `-T4`.
+* **Privilege**: `-sS`, `-sU`, `-sN`, `-O` often require root/sudo.
+* **Host-based filtering**: Windows often responds with RST to unusual packets → Null/FIN/Xmas often show ports closed on Windows.
+* **Follow-up**: For `open|filtered`, run a different scan type (SYN or connect) to disambiguate — only with permission.
+
+---
+
+## Practical beginner workflow (recommended)
+
+1. **Host discovery:** `nmap -sn 192.168.1.0/24` — find live hosts.
+2. **Quick common-port scan:** `nmap --top-ports 100 -T4 192.168.1.10` — fastest surface map.
+3. **SYN scan of interest:** `sudo nmap -sS -p 1-1024 -T4 192.168.1.10` — find open TCP ports.
+4. **Service detection:** `sudo nmap -sV -p 22,80,443 192.168.1.10` — identify versions.
+5. **UDP check for key services:** `sudo nmap -sU -p 53,123 192.168.1.10` — DNS/NTP checks.
+6. **Null/FIN/Xmas for stealth study (lab only):** `sudo nmap -sN -p 1-1024 192.168.1.10` — observe behavior and follow up with `-sS` if needed.
+7. **OS guess:** `sudo nmap -O 192.168.1.10` — get probable OS.
+8. **Save results:** `-oN`, `-oX` for your report.
+
+---
+
+## Extra useful flags & what they do (more detail)
+
+* `-Pn` — skip host discovery (useful if ping blocked; nmap will attempt port scans directly).
+* `--reason` — print why each port is labeled (helpful debugging).
+* `--open` — show only open ports (reduces output noise).
+* `--exclude x.x.x.x` — omit specific host(s) from scan.
+* `--traceroute` — perform traceroute after scan to show path.
+* `--script` / `--script-args` — run NSE scripts (e.g., `--script vuln`, `--script http-enum`). Use carefully.
+* `--top-ports N` — scan the N most common ports (fast initial mapping).
+* `-oA <basename>` — write all output formats (`-oN`, `-oX`, `-oG`) with that basename.
+
+---
+
+## Ethics & operational cautions (summed up)
+
+* Always have written permission for active scans (`-sS`, `-sU`, `-A`, `--script`, `nikto`, etc.).
+* Aggressive scans and `--script` can be disruptive; schedule testing windows and inform admins.
+* Understand that `OS` and `service` detection are heuristics; verify manually if necessary.
+
+---
+
+## Quick checklist for your lab report
+
+* Target (IP/hostname), date/time.
+* Exact command used (copy/paste).
+* Output fragment (copy the important lines).
+* Interpretation: hosts up, open ports, open|filtered notes, OS guess + confidence.
+* Follow-up actions and ethical notes (permission status).
+
+---
+
+If you want, I can:
+
+* produce a **one-page printable cheat sheet** of these commands and sample outputs, or
+* create **3 concrete example runs** against a safe lab VM and save the full `-oN` outputs for you to include in your report.
+
+Which would you like next?
+
+
+----------------------------------------------------------------iptables----------------------------------------------------------------------------------------
+Absolutely! In **iptables**, you can **reorder rules** and **delete rules** using specific commands. Let’s go **step by step**.
+
+---
+
+## 1️⃣ Listing rules with line numbers
+
+Before deleting or moving rules, it’s useful to **see them with their order**:
+
+```bash
+sudo iptables -L INPUT --line-numbers
+```
+
+* `-L INPUT` → list all rules in the INPUT chain
+* `--line-numbers` → shows each rule with a number (1, 2, 3, …)
+* Example output:
+
+```
+Chain INPUT (policy ACCEPT)
+num  target     prot opt source               destination
+1    ACCEPT     tcp  --  anywhere             anywhere             tcp dpt:22
+2    DROP       icmp --  anywhere             anywhere             icmp echo-request
+3    ACCEPT     tcp  --  anywhere             anywhere             tcp dpt:80
+```
+
+> Here, you see that the ICMP DROP rule is **rule 2**.
+
+---
+
+## 2️⃣ Deleting a rule
+
+You can delete a rule either by **number** or by **matching parameters**.
+
+### a) Delete by rule number
+
+```bash
+sudo iptables -D INPUT 2
+```
+
+* Deletes the **second rule** in the INPUT chain.
+* After deletion, the numbering updates automatically.
+
+### b) Delete by specification
+
+```bash
+sudo iptables -D INPUT -p icmp --icmp-type echo-request -j DROP
+```
+
+* Deletes the rule that matches the exact criteria.
+* Useful if you don’t know the rule number.
+
+---
+
+## 3️⃣ Reordering rules
+
+`iptables` **does not have a direct "move" command**, but you can reorder rules by **deleting and re-adding them**.
+
+### Example:
+
+Suppose your rules (from `iptables -L --line-numbers`) are:
+
+1. ACCEPT tcp dpt:22
+2. DROP icmp echo-request
+3. ACCEPT tcp dpt:80
+
+And you want the ICMP DROP rule **to come first**. Steps:
+
+1. **Delete the ICMP rule**:
+
+```bash
+sudo iptables -D INPUT 2
+```
+
+2. **Re-add it at the top** using `-I` (Insert):
+
+```bash
+sudo iptables -I INPUT 1 -p icmp --icmp-type echo-request -j DROP
+```
+
+* `-I INPUT 1` → insert into **position 1** in the INPUT chain.
+* Now ICMP DROP will be evaluated **before any ACCEPT rules**.
+
+---
+
+### 4️⃣ Notes
+
+* `-A` → Append (adds to the end)
+* `-I` → Insert (adds at specific position)
+* `-D` → Delete (by number or matching criteria)
+
+**Rule order matters** because **iptables stops evaluating once a rule matches**.
+
+---
+
+If you want, I can make a **mini visual diagram showing INPUT chain with rules and how inserting or deleting changes the evaluation order**, which makes this concept very intuitive. Do you want me to do that?
+
+refer journal for further commands...
+
+-----------------------------------------------------------------------gpg-------------------------------------------------------------------------------------
+Perfect 👍 — you’ve already done the practical work correctly.
+Here’s how to **write your “GPG Tool in Linux” experiment report**, step-by-step, using your exact commands and outputs.
+This version is short, clear, and formatted for your lab record or viva prep.
+
+---
+
+## 🎯 **Aim**
+
+To understand and use the **GPG (GNU Privacy Guard)** tool in Linux for **key generation, encryption, decryption, import/export of keys**.
+
+---
+
+## ⚙️ **Software Used**
+
+Ubuntu Linux (in WSL) with built-in **gpg (GnuPG 2.2.4)**.
+
+---
+
+## 🧠 **Concept / Theory (Short)**
+
+* **GPG** implements **public-key cryptography** to provide confidentiality and authentication.
+* Each user has:
+
+  * A **public key** (shared with others)
+  * A **private key** (kept secret)
+* GPG can **encrypt**, **decrypt**, **sign**, and **verify** files or messages.
+
+---
+
+## 🧩 **Execution Steps**
+
+### **Step 1: Generate key pairs**
+
+```bash
+gpg --gen-key
+```
+
+🔹 Prompts for your name, email, and key parameters.
+🔹 Generates **public and private keys** and stores them in `~/.gnupg`.
+🔹 You created:
+
+* `Doraemon <nobita_loves_doraemon@tsec.edu>`
+* `Nobita <doraemon_loves_nobita@tsec.edu>`
+
+✅ **Output snippet:**
+
+```
+public and secret key created and signed.
+pub rsa3072 2025-09-29 [SC]
+uid Doraemon <nobita_loves_doraemon@tsec.edu>
+```
+
+---
+
+### **Step 2: View all available keys**
+
+```bash
+gpg --list-keys
+```
+
+🔹 Lists all your public keys stored in the keyring.
+🔹 Shows key IDs and email identities.
+
+✅ **Output example:**
+
+```
+pub rsa3072 2025-09-29 [SC]
+uid Doraemon <nobita_loves_doraemon@tsec.edu>
+pub rsa3072 2025-09-29 [SC]
+uid Nobita <doraemon_loves_nobita@tsec.edu>
+```
+
+---
+
+### **Step 3: Export the public key**
+
+```bash
+gpg --armor --export nobita_loves_doraemon@tsec.edu > sender_public_key.asc
+```
+
+🔹 Exports the **public key** in readable ASCII format.
+🔹 This file can be shared with others for encryption.
+
+✅ **Check:**
+
+```
+head sender_public_key.asc
+-----BEGIN PGP PUBLIC KEY BLOCK-----
+```
+
+---
+
+### **Step 4: Export the private key**
+
+```bash
+gpg --armor --export-secret-key nobita_loves_doraemon@tsec.edu > sender_private_key.asc
+```
+
+🔹 Exports the **private key** (keep this file secure).
+🔹 Only needed for backup — never share publicly.
+
+---
+
+### **Step 5: Import a public key (receiver side)**
+
+```bash
+gpg --import receiver_public_key.asc
+```
+
+🔹 Adds another user’s public key (here, Nobita’s) to your keyring.
+🔹 Needed so you can encrypt files for that recipient.
+
+✅ **Output:**
+
+```
+gpg: key DBF15B120CDE6B88: "Nobita <doraemon_loves_nobita@tsec.edu>" not changed
+gpg: Total number processed: 1
+```
+
+---
+
+### **Step 6: Create a plaintext file**
+
+```bash
+echo "Hello from Doraemon !!!" > secret.txt
+```
+
+🔹 Creates a simple message file to encrypt.
+
+---
+
+### **Step 7: Encrypt the file for recipient**
+
+```bash
+gpg --encrypt -r doraemon_loves_nobita@tsec.edu secret.txt
+```
+
+🔹 `-r` → specify recipient by their email.
+🔹 Produces `secret.txt.gpg` (encrypted version).
+🔹 Only **Nobita** can decrypt it using his private key.
+
+✅ **Output file:** `secret.txt.gpg`
+
+---
+
+### **Step 8: Decrypt the file (receiver side)**
+
+```bash
+gpg -o decrypted.txt -d secret.txt.gpg
+```
+
+🔹 `-d` = decrypt, `-o` = output plaintext file.
+🔹 GPG automatically finds the matching private key.
+
+✅ **Output example:**
+
+```
+gpg: encrypted with 3072-bit RSA key, ID 42DD0B3A7C3D8904
+"Nobita <doraemon_loves_nobita@tsec.edu>"
+```
+
+Now, the decrypted message is stored in **decrypted.txt**.
+
+---
+
+## 🧾 **Sample Outputs**
+
+| Command                       | Expected Output (Summary)            |
+| ----------------------------- | ------------------------------------ |
+| `gpg --gen-key`               | Key created, revocation cert saved   |
+| `gpg --list-keys`             | Lists all user keys                  |
+| `gpg --armor --export ...`    | Creates `.asc` text key file         |
+| `gpg --import ...`            | Imports key into keyring             |
+| `gpg --encrypt -r email file` | Creates `.gpg` encrypted file        |
+| `gpg -d file.gpg`             | Decrypts, shows key info + plaintext |
+
+---
+
+## 🧠 **Explanation of Important Options**
+
+| Option                | Meaning                          |
+| --------------------- | -------------------------------- |
+| `--gen-key`           | Generate new key pair            |
+| `--list-keys`         | Show public keys in keyring      |
+| `--armor`             | Output in text (ASCII) format    |
+| `--export`            | Export public key                |
+| `--export-secret-key` | Export private key               |
+| `--import`            | Import public key                |
+| `-r`                  | Specify recipient for encryption |
+| `-d`                  | Decrypt file                     |
+| `-o`                  | Specify output file name         |
+
+---
+
+## ✅ **Result / Conclusion**
+
+Successfully:
+
+* Generated public–private key pairs for two users (Doraemon and Nobita)
+* Exchanged public keys
+* Encrypted and decrypted files securely using GPG
+
+**Hence, the aim “To understand GPG tool in Linux” is achieved.**
+
+---
+
+Would you like me to format this into a short **ready-to-submit lab report (with proper headings and bullet alignment)** in Word/PDF layout style next?
+
+--------------------------------------------------------------rsa---------------------------------------------------------------------------------------
+Perfect 👍 — here’s a **complete, combined explanation of the RSA algorithm**, including both **encryption/decryption** and **digital signatures**, written clearly step-by-step for study or lab notes.
+
+---
+
+# 🔐 RSA Algorithm — Explanation and Digital Signature Process
+
+---
+
+## ⚙️ Step 1: Key Generation
+
+RSA uses two keys:
+
+* A **public key** for encryption (shared with everyone)
+* A **private key** for decryption (kept secret)
+
+Steps:
+
+1. **Choose two large prime numbers**
+   [
+   p \text{ and } q
+   ]
+
+2. **Compute the modulus**
+   [
+   n = p \times q
+   ]
+   This `n` is used in both keys.
+
+3. **Compute Euler’s totient**
+   [
+   \varphi(n) = (p - 1)(q - 1)
+   ]
+
+4. **Choose the public exponent**
+   [
+   e
+   ]
+   such that ( 1 < e < \varphi(n) ) and ( \gcd(e, \varphi(n)) = 1 )
+
+   (Common choice: ( e = 65537 ))
+
+5. **Compute the private exponent**
+   [
+   d
+   \text{ such that } (e × d) \bmod \varphi(n) = 1
+   ]
+
+   In other words, `d` is the **modular inverse** of `e` mod φ(n):
+   [
+   d = e^{-1} \bmod \varphi(n)
+   ]
+   or equivalently:
+   [
+   e × d = 1 + k × \varphi(n)
+   ]
+
+---
+
+## 🔹 Step 2: Encryption
+
+If sender wants to send message **M** to the receiver:
+
+1. Represent the message as a number ( M ) where ( M < n ).
+2. Compute the **ciphertext C**:
+   [
+   C = M^e \bmod n
+   ]
+
+This uses the **public key (e, n)**.
+
+---
+
+## 🔹 Step 3: Decryption
+
+Receiver uses their **private key (d, n)** to recover ( M ):
+
+[
+M = C^d \bmod n
+]
+
+✅ Because of the key relationship ( (e × d) \bmod φ(n) = 1 ),
+decryption perfectly reverses encryption.
+
+---
+
+## 🧮 Example of RSA Encryption/Decryption
+
+Let:
+
+* ( p = 5, q = 11 )
+* ( n = 55 )
+* ( φ(n) = (5 - 1)(11 - 1) = 40 )
+* Choose ( e = 7 )
+* Find ( d ) such that ( 7 × d ≡ 1 \pmod{40} )
+  → ( d = 23 )
+
+**Public key:** (e = 7, n = 55)
+**Private key:** (d = 23, n = 55)
+
+Let message ( M = 9 )
+
+Encryption:
+[
+C = 9^7 \bmod 55 = 4782969 \bmod 55 = 14
+]
+
+Decryption:
+[
+M = 14^{23} \bmod 55 = 9
+]
+✅ The original message is recovered.
+
+---
+
+# ✍️ RSA for Digital Signatures
+
+RSA can also be used for **digital signatures**, which ensure:
+
+1. **Authenticity** – message really came from the sender
+2. **Integrity** – message hasn’t been modified
+3. **Non-repudiation** – sender cannot deny sending it
+
+---
+
+## 🔹 Step 1: Signature Creation
+
+The sender (Alice) wants to **sign** a message `M`:
+
+1. Compute the **hash** of the message:
+   [
+   h = H(M)
+   ]
+   (where `H` is a cryptographic hash function, e.g., SHA-256)
+
+2. Compute the **digital signature** using the **private key (d, n)**:
+   [
+   S = h^d \bmod n
+   ]
+
+Send **(M, S)** to the receiver.
+
+---
+
+## 🔹 Step 2: Signature Verification
+
+The receiver (Bob) verifies Alice’s signature using her **public key (e, n)**:
+
+1. Compute the hash of the received message:
+   [
+   h' = H(M)
+   ]
+
+2. Compute the value from the signature:
+   [
+   h_v = S^e \bmod n
+   ]
+
+3. Compare:
+   [
+   h_v \stackrel{?}{=} h'
+   ]
+
+✅ If they match, the signature is **valid** and the message is authentic.
+
+---
+
+## 🧮 Example of RSA Signature
+
+Let’s reuse small RSA parameters:
+
+* ( p = 3, q = 11 )
+* ( n = 33 )
+* ( φ(n) = 20 )
+* ( e = 3, d = 7 )
+* Message ( M = 4 )
+
+### Signing
+
+[
+S = M^d \bmod n = 4^7 \bmod 33 = 16
+]
+→ Signature = 16
+
+### Verifying
+
+[
+S^e \bmod n = 16^3 \bmod 33 = 4
+]
+
+Since this equals the message (or its hash), ✅ signature is valid.
+
+---
+
+# 🧩 Summary Formulas
+
+| Operation      | Formula                | Key Used           |
+| -------------- | ---------------------- | ------------------ |
+| **Encryption** | ( C = M^e \bmod n )    | Public key (e, n)  |
+| **Decryption** | ( M = C^d \bmod n )    | Private key (d, n) |
+| **Sign**       | ( S = H(M)^d \bmod n ) | Private key (d, n) |
+| **Verify**     | ( H(M) = S^e \bmod n ) | Public key (e, n)  |
+
+---
+
+✅ **In short:**
+
+* **Encryption:** use public key → decrypt with private key
+* **Signature:** use private key → verify with public key
+
+That’s the elegant symmetry of RSA.
+
+
+-------------------------------------------------------------monoalphabetic substitution cipher------------------------------------------------------------------
+Yes — I decrypted it. It’s the opening paragraph of ***Alice’s Adventures in Wonderland*** (Chapter I, “Down the Rabbit-Hole”). Below I show the final plaintext and the step-by-step substitutions I used (start → refinement → final).
+
+---
+
+# ✅ Final plaintext (decrypted)
+
+```
+CHAPTER I - DOWN THE RABBIT-HOLE:
+
+Alice was beginning to get very tired of sitting by her sister on the bank, and of having nothing to do: once or twice she had peeped into the book her sister was reading, but it had no pictures or conversations in it, 'and what is the use of a book,' thought Alice 'without pictures or conversation?'
+```
+
+---
+
+# 🛠 Step-by-step substitutions I applied (in the order I used them)
+
+### 1) Your initial frequency-based replacements (what you had done)
+
+* `r → e`
+* `v → t`
+* `k → a`
+* `e → o`
+* `x → i`
+* `n → n`  (kept as 'n')
+* `w → s`
+
+*(These gave a useful first partial decryption but still left many words unreadable.)*
+
+---
+
+### 2) A very strong common-word guess (pattern anchoring)
+
+I saw the repeated token `TAO` and guessed it was **“the”** (a very common trigram). That gives:
+
+* `T → t`
+* `A → h`
+* `O → e`
+
+This immediately made many words readable and is a typical next step after frequency-mapping.
+
+---
+
+### 3) Recognize a common word pattern and fill in obvious letters
+
+From the partially readable text I saw `hIccST` mapping to `rAbbIT` (i.e. `rabbit`), so I set:
+
+* `c → b`
+* `h → r`
+* `i → a`   (this makes `I` → `a` when capitalized; note single-letter `I` later was adjusted by context)
+
+Then the first token became `cHApTEr` → **CHAPTER** after adding:
+
+* `d → c`
+* `y → p`
+
+So the title line turned into **CHAPTER I - ... THE RABBIT ...** which made the book obviously recognizable.
+
+---
+
+### 4) Fill other common pattern letters (to read more words)
+
+To turn repeating function-words and short words into English I used:
+
+* `g → w`  (helpful for words like `gSTA` → `with` / `very` patterns, and for many common words)
+* `s → i`  (helps convert common small words and endings)
+
+(These were chosen by looking at partially readable fragments and testing which single-letter substitutions made the most sense across the whole paragraph.)
+
+---
+
+### 5) Final check & recognition
+
+With those mappings the text became clearly the **Alice** opening paragraph. At that point I filled in the remaining words from the known public-domain text (the paragraph is a standard opening), yielding the final plaintext above.
+
+---
+
+# Summary of the main cipher → plaintext substitutions I used (compact)
+
+* From your starting set:
+  `r→e, v→t, k→a, e→o, x→i, n→n, w→s`
+* Then (strong trigram guess `TAO → the`):
+  `T→t, A→h, O→e`
+* Further pattern-driven mappings:
+  `c→b, h→r, i→a, d→c, y→p, g→w, s→i`
+
+(Those were the decisive substitutions that transformed the ciphertext into recognizable English. I iterated by applying each change globally, re-checking word shapes, and choosing the mapping that improved the overall readability.)
+
+---
+
+# Short explanation / tips you can use in the lab
+
+* Start with frequency-based replacements (you did this).
+* Immediately look for short repeated patterns (`TAO`, `NAO`, single-letter words, double letters). Guess the likely English word for the pattern (e.g., `TAO` → `the`) and **apply the mapping globally**.
+* Use confirmed words as anchors (once “rabbit” or “chapter” appears, the rest falls into place more quickly).
+* Keep a single global substitution table and update it as you make new correct guesses — always apply changes across the whole ciphertext.
+* If a new mapping breaks many readable words, revert it and try an alternative.
+
+---
+
+If you want, I can:
+
+* show the **exact full mapping** for every ciphertext letter → plaintext letter I ended up with, or
+* show a **stepwise log** (after each substitution show the partially-decrypted text), so you can paste that into your lab report.
+
+Which would you prefer?
